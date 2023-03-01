@@ -1,10 +1,14 @@
 import React from "react";
-import Button from "./components/Button";
+import ScreenViewButton from "./components/screenView/ScreenViewButton";
+import MenuExA from "./components/menu/menu";
+import GraphExA from "./components/graph/graph";
 
 function App() {
   return (
     <div className="App" style={{ padding: "50px" }}>
-      <Button />
+      <ScreenViewButton />
+      <MenuExA />
+      <GraphExA />
     </div>
   );
 }
