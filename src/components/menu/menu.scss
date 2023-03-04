@@ -12,12 +12,14 @@
   width: 300px;
   padding: 0 30px;
   box-sizing: border-box;
-  span {
+  button {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 30px;
     height: 30px;
+    border: 0;
+    background-color: #fff;
     svg {
       height: 20px;
       width: 20px;
@@ -55,7 +57,7 @@
     padding: 0 3px 3px 3px;
     background-color: #8db4ad;
     &::after {
-      content: "";
+      content: '';
       width: 15px;
       height: 10px;
       border: 0;
@@ -68,7 +70,7 @@
       background-color: #fff;
     }
     &::before {
-      content: "";
+      content: '';
       width: 15px;
       height: 10px;
       border: 0;

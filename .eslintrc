@@ -1,0 +1,41 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:import/typescript"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ], //import resolve problem
+    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }], //jsx not in tsx
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "warn", //위 두개는 declared 오류 해결
+    "linebreak-style": 0,
+    "comma-dangle": ["error", "never"],
+    "jsx-quotes": [2, "prefer-single"],
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": false,
+        "html": false
+      }
+    ]
+  },
+  "env": {
+    "browser": true
+  }
+}
