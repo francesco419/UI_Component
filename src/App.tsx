@@ -3,6 +3,7 @@ import ScreenViewButton from './components/screenView/ScreenViewButton';
 import MenuExA from './components/menu/menu';
 import GraphExA from './components/graph/graph';
 import Button from './components/Button';
+import BezierCurve from './components/graph/bezierCurve';
 
 const LazyPlayTest = lazy(() => import('./components/junk/play'));
 
@@ -13,6 +14,7 @@ function App() {
       <ScreenViewButton disabled={false} />
       <MenuExA />
       <GraphExA />
+      <BezierCurve />
       <Button
         child='"show"'
         disabled={false}

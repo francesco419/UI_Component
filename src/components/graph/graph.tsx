@@ -4,7 +4,9 @@ import Button from '../Button';
 
 export default function GraphExA() {
   const ref = useRef<HTMLCanvasElement>(null);
-  const [arr, setArr] = useState<number[]>([]);
+  const [arr, setArr] = useState<number[]>([
+    10, 20, 30, 60, 40, 20, 60, 80, 60, 100
+  ]);
   const [str, setStr] = useState<string>('');
 
   const num = () => {
@@ -22,11 +24,12 @@ export default function GraphExA() {
     z: number,
     bool: boolean
   ) => {
+    const ySubt = 8.5;
     if (bool) {
-      ctx.bezierCurveTo(x, y + 20, x + 20, y + 20, x + 30, z);
+      ctx.bezierCurveTo(x, y + ySubt, x + 20, y + ySubt, x + 30, z);
       //  상승곡선
     } else {
-      ctx.bezierCurveTo(x, y - 20, x + 20, y - 20, x + 30, z);
+      ctx.bezierCurveTo(x, y - ySubt, x + 20, y - ySubt, x + 30, z);
       //  하강곡선
     }
   };
@@ -70,8 +73,28 @@ export default function GraphExA() {
     return point;
   };
 
+  const drawLint = () => {
+    const ctx = ref.current?.getContext('2d');
+    if (ctx) {
+      ctx.beginPath();
+      ctx.moveTo(0, 20);
+      if (ctx !== undefined && ctx !== null) {
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+      }
+      ctx.lineTo(300, 20);
+      ctx.moveTo(0, 40);
+      ctx.lineTo(300, 40);
+      ctx.moveTo(0, 58);
+      ctx.lineTo(300, 58);
+      ctx.moveTo(0, 80);
+      ctx.lineTo(300, 80);
+      ctx.stroke();
+    }
+  };
+
   const curve = () => {
-    console.log('curve');
+    drawLint();
     const ctx = ref.current?.getContext('2d');
     if (ctx) {
       ctx.beginPath();
@@ -106,17 +129,73 @@ export default function GraphExA() {
         xPoint += 40;
         //  다음 곡선의 시작포인트 설정
       }
-      ctx.moveTo(0, 0);
-      for (let i = 0; i < point.length; i += 1) {
-        ctx.lineTo(30 * (i + 1), point[i]);
-      }
-
       ctx.stroke();
     }
   };
 
   const doStr = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStr(e.target.value);
+  };
+
+  const point = seperatePoint();
+  let x = 0;
+  let y = 0;
+  let i = 0;
+  let bool = false;
+  let first = true;
+  let dok = 'up';
+
+  const loopAnimate = () => {
+    if (i !== point.length) {
+      requestAnimationFrame(loopAnimate);
+    }
+    const ctx = ref.current?.getContext('2d');
+    if (ctx) {
+      ctx?.clearRect(0, 0, 300, 200);
+      if (first) {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        first = false;
+      }
+      if (ctx !== undefined && ctx !== null) {
+        ctx.strokeStyle = 'blue';
+        ctx.lineWidth = 2;
+      }
+
+      let to;
+      if (i > 0) {
+        to = Math.abs(point[i - 1] - point[i]);
+      } else {
+        to = point[i];
+      }
+
+      const pointY = Math.sqrt(to ** 2 + 20 ** 2) / 10; // 추가 계수
+
+      ctx?.lineTo(x, y);
+      ctx?.stroke();
+
+      x += 4;
+
+      if (dok === 'up') {
+        // 상승
+        y += pointY; // 계수 추가
+        if (y >= point[i]) {
+          //목표지점에 도달시
+          dok = 'down';
+          i++;
+        }
+      }
+
+      if (dok === 'down') {
+        // 하강
+        y -= pointY; // 계수 빼기
+        if (y <= point[i]) {
+          //목표지점에 도달시
+          dok = 'up';
+          i++;
+        }
+      }
+    }
   };
 
   return (
@@ -127,6 +206,7 @@ export default function GraphExA() {
       <input type='text' value={str} onChange={(e) => doStr(e)} />
       <Button child='input' disabled={false} click={num} />
       <Button child='curve' disabled={false} click={curve} />
+      <Button child='qua' disabled={false} click={loopAnimate} />
       <div style={{ display: 'flex', margin: '10px 0 0 0' }}>
         {arr.map((data) => (
           <p style={{ margin: '0 5px 0 0' }}>{`${data} /`}</p>
