@@ -1,33 +1,23 @@
 import React, { lazy, Suspense, useState } from 'react';
-import ScreenViewButton from './components/screenView/ScreenViewButton';
-import MenuExA from './components/menu/menu';
-import GraphExA from './components/graph/graph';
-import Button from './components/Button';
-import BezierCurve from './components/graph/bezierCurve';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Compo from './pages/components';
+import Main from './pages/Main';
+import Lodashy from './components/lodash/lodash';
 
 const LazyPlayTest = lazy(() => import('./components/junk/play'));
 
 function App() {
   const [show, setShow] = useState<boolean>(false);
   return (
-    <div className='"App"' style={{ padding: '50px' }}>
-      <ScreenViewButton disabled={false} />
-      <MenuExA />
-      <GraphExA />
-      <BezierCurve />
-      <Button
-        child='"show"'
-        disabled={false}
-        click={() => {
-          setShow(!show);
-        }}
-      />
-      {show ? (
-        <Suspense fallback='"loaading"'>
-          <LazyPlayTest />
-        </Suspense>
-      ) : null}
-    </div>
+    <BrowserRouter>
+      <React.Suspense>
+        <Routes>
+          <Route path={`/Compo`} element={<Compo />} />
+          <Route path={`/Lodash`} element={<Lodashy />} />
+          <Route path={`/`} element={<Main />} />
+        </Routes>
+      </React.Suspense>
+    </BrowserRouter>
   );
 }
 
